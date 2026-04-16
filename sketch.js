@@ -20,7 +20,7 @@ function setup() {
 function draw() {
   background(30);
 
-  // 점수 표시
+  // 점수 표시jjlojo
   fill(255);
   textSize(20);
   text("점수: " + score, 20, 25);

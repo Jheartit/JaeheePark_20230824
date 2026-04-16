@@ -9,7 +9,7 @@ let score = 0;
 // 벽 설정
 let wx = 200, wy = 150, ww = 50, wh = 100; // 기존 벽
 let lwx = 480, lwy = 0, lww = 10, lwh = 400; // 라인 벽
-let lwSpeed = 2; // 빨간 벽의 이동 속도dl
+let lwSpeed = 2; // 빨간 벽의 이동 속도dlklk
 
 function setup() {
   createCanvas(600, 400);

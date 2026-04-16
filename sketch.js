@@ -9,7 +9,7 @@ let score = 0;
 // 벽 설정
 let wx = 200, wy = 150, ww = 50, wh = 100; // 기존 벽
 let lwx = 480, lwy = 0, lww = 10, lwh = 400; // 라인 벽
-let lwSpeed = 2; // 빨간 벽의 이동 속도dlklk
+let lwSpeed = 2; // 빨간 벽의 이동 속도d
 
 function setup() {
   createCanvas(600, 400);
@@ -20,8 +20,8 @@ function setup() {
 function draw() {
   background(30);
 
-  // 점수 표시
-  fill(255);
+  // 점수 표시 wkehd
+  fill(250);
   textSize(20);
   text("점수: " + score, 20, 25);
 

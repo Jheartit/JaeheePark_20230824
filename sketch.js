@@ -5,8 +5,8 @@ let dy = [150, 250, 100, 300, 200];
 let dSize = 15;
 let dActive = [true, true, true, true, true];
 let score = 0;
-// 이제 자동화가 될까?
 // 벽 설정
+// 자동화되어야지
 let wx = 200, wy = 150, ww = 50, wh = 100; // 기존 벽
 let lwx = 480, lwy = 0, lww = 10, lwh = 400; // 라인 벽
 let lwSpeed = 2; // 빨간 벽의 이동 속도dlklk

@@ -1,4 +1,4 @@
 {
     "code-auto-commit.autoPush": true,
-    "code-auto-commit.commitTimeInterval": 10000
+    "code-auto-commit.commitTimeInterval": 300000
 }

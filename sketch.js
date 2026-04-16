@@ -20,7 +20,7 @@ function setup() {
 function draw() {
   background(30);
 
-  // 점수 표시 wkehd
+  // 점수 표시 sknvmojnj
   fill(250);
   textSize(20);
   text("점수: " + score, 20, 25);

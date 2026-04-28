@@ -19,3 +19,14 @@ function isWall(c, r) {
     let brightness = (mapPx[idx] + mapPx[idx+1] + mapPx[idx+2]) / 3;
     return brightness > 40; // 밝은 부분이 벽
 }
+
+// 팩맨
+function makePac() {
+    return {
+        col:13, row:23, x:13*TILE+TILE/2, y:23*TILE+TILE/2, dx:0, dy:0, ndx:0, ndy:0, mouth:0.25, md:1 
+    };
+}
+
+function updatePac(p) {
+    
+}

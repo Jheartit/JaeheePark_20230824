@@ -105,3 +105,23 @@ function initGame() {
         ghosts.push(makeGhost(i));
     score = 0; energy = 3; state='PLAY'; restartT=0; flashT=0;
 }
+
+function draw() {
+    background(0);
+    if(state==='PLAY') {
+        updatePac(pac);
+        for(let g of ghosts) {
+            updateGhost(g);
+            if (g.inv>0) continue;
+            if(dist(pac.x,pac.y,g.x,g.y)<TILE*0.75) {
+                energy--; flashT=60; spawnGhost(g);
+                if (energy<=0) { state='LOSE'; restartT=0; }
+            }
+        }
+        if(flashT>0) flashT--;
+        if(dots.length===0) { state='WIN'; restartT=0; }
+    }
+    // 맵 이미지
+  image(mapImg, 0,0, COLS*TILE, ROWS*TILE);
+  if(flashT>0 && flashT%10<5){fill(255,0,0,55);noStroke();rect(0,0,COLS*TILE,ROWS*TILE);}
+  

@@ -64,6 +64,10 @@ function makeGhost(c) {
     let g = { idx:1, dx:1, dy:0, inv:90};
     spawnGhost(g); return g;
 }
+function spawnGhost(g) {
+}
+function updateGhost(g) {
+}
 
 function drawGhost(g) {
   let [r,gr,b]=GCOLS[g.idx%5];
@@ -155,6 +159,20 @@ function draw() {
   fill(0,200,255); textAlign(CENTER,CENTER); textSize(11);
   text('DOTS '+dots.length, COLS*TILE/2, ROWS*TILE+20);
 
+  // 오버레이
+  if(state!=='PLAY'){
+    fill(0,0,0,170); noStroke(); rect(0,0,COLS*TILE,ROWS*TILE+40);
+    let c1=state==='WIN'?color(0,255,190):color(255,55,55);
+    let bw=260,bh=106,bx=(COLS*TILE-bw)/2,by=(ROWS*TILE-bh)/2;
+    fill(4,8,38,235); stroke(c1); strokeWeight(2); rect(bx,by,bw,bh,8);
+    noStroke(); fill(c1); textFont('monospace'); textSize(24); textAlign(CENTER,CENTER);
+    text(state==='WIN'?'YOU WIN!':'GAME OVER', COLS*TILE/2, by+32);
+    fill(210,210,255); textSize(13); text('SCORE '+nf(score,5), COLS*TILE/2, by+60);
+    fill(100,140,255); textSize(10);
+    text('Restart in '+max(0,ceil((180-restartT)/60))+'s  |  ENTER to skip', COLS*TILE/2, by+88);
+    restartT++;
+    if(restartT>180) initGame();
+  }
 }
 
 function keyPressed() {

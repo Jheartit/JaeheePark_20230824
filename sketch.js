@@ -46,3 +46,21 @@ function updatePac(p) {
         if (dots[i].c===p.col && dots[i].r===p.row) { dots.splice(i,1); score+=10; break;}
     }
 }
+
+function drawPac(p) {
+    push(); translate(p.x, p.y);
+    let a = (p.dx===-1)?PI : (p.dy===1)?HALF_PI : (p.dy===-1)?-HALF_PI : 0;
+    rotate(a);
+    noStroke();
+    fill(255,220,0,60); arc(0,0,TILE+6,TILE+6, p.mouth*PI, TWO_PI-p.mouth*PI, PIE);
+    fill(255,220,0);    arc(0,0,TILE-2,TILE-2, p.mouth*PI, TWO_PI-p.mouth*PI, PIE);
+    fill(0); ellipse(3,-5,3,3);
+    pop();
+}
+
+// 적 (유령)
+const GCOLS = [[255,30,30], [255,180,255], [0,200,255], [255,165,0], [100,255,120]];
+function makeGhost(c) {
+    let g = { idx:1, dx:1, dy:0, inv:90};
+    spawnGhost(g); return g;
+}

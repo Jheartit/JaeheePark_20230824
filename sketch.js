@@ -124,4 +124,19 @@ function draw() {
     // 맵 이미지
   image(mapImg, 0,0, COLS*TILE, ROWS*TILE);
   if(flashT>0 && flashT%10<5){fill(255,0,0,55);noStroke();rect(0,0,COLS*TILE,ROWS*TILE);}
-  
+
+  // 콩
+  noStroke();
+  for(let d of dots){
+    let x=d.c*TILE+TILE/2, y=d.r*TILE+TILE/2;
+    fill(255,210,150,70); ellipse(x,y,9,9);
+    fill(255,210,150);    ellipse(x,y,4,4);
+  }
+ 
+  drawPac(pac);
+  for(let g of ghosts) drawGhost(g);
+
+  // UI 바
+  fill(5,5,25); noStroke(); rect(0,ROWS*TILE,COLS*TILE,40);
+  stroke(0,180,255,120); strokeWeight(1); line(0,ROWS*TILE,COLS*TILE,ROWS*TILE); noStroke();
+  fill(255,200,0); textFont('monospace'); textSize(14); textAlign(LEFT,CENTER);

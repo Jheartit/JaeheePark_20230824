@@ -140,3 +140,27 @@ function draw() {
   fill(5,5,25); noStroke(); rect(0,ROWS*TILE,COLS*TILE,40);
   stroke(0,180,255,120); strokeWeight(1); line(0,ROWS*TILE,COLS*TILE,ROWS*TILE); noStroke();
   fill(255,200,0); textFont('monospace'); textSize(14); textAlign(LEFT,CENTER);
+  text('SCORE '+nf(score,5), 10, ROWS*TILE+20);
+
+  for(let i=0;i<3;i++){
+    fill(i<energy?color(255,60,100):color(50,50,70));
+    let hx=COLS*TILE-14-i*20;
+    push(); translate(hx,ROWS*TILE+20); noStroke();
+    beginShape();
+    vertex(0,6); bezierVertex(-1,2,-9,-1,-4,-7); bezierVertex(-1,-12,0,-7,0,-4);
+    bezierVertex(0,-7,1,-12,4,-7); bezierVertex(9,-1,1,2,0,6);
+    endShape(CLOSE); pop();
+  }
+
+  fill(0,200,255); textAlign(CENTER,CENTER); textSize(11);
+  text('DOTS '+dots.length, COLS*TILE/2, ROWS*TILE+20);
+
+}
+
+function keyPressed() {
+    if(state!=='PLAY') { if(keyCode===ENTER || key==='r' || key==='R') initGame(); return; }
+    if(keyCode===UP_ARROW) { pac.ndx=0; pac.ndy=-1; }
+    if(keyCode===DOWN_ARROW) { pac.ndx=0; pac.ndy=1; }
+    if(keyCode===LEFT_ARROW) { pac.ndx=-1; pac.ndy=0; }
+    if(keyCode===RIGHT_ARROW) { pac.ndx=1; pac.ndy=0; }
+}

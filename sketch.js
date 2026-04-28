@@ -38,16 +38,16 @@ function isWall(c, r) {
 // 팩맨
 function makePac() {
     return {
-        col:10, row:11, x:10*TILE+TILE/2, y:11*TILE+TILE/2, dx:0, dy:0, ndx:0, ndy:0, mouth:0.25, md:1
+        col:9, row:11, x:9*TILE+TILE/2, y:11*TILE+TILE/2, dx:0, dy:0, ndx:0, ndy:0, mouth:0.25, md:1
     };
 }
 
 function updatePac(p) {
     let cx = p.col * TILE + TILE/2, cy = p.row * TILE + TILE/2;
-    if (abs(p.x - cx) < 3 && abs(p.y - cy) < 3) {
+    if (abs(p.x - cx) <=2 && abs(p.y - cy) <= 2) {
+        p.x=cx; p.y=cy;
         if (!isWall(p.col+p.ndx, p.row+p.ndy)) { p.dx = p.ndx; p.dy = p.ndy; }
         if (isWall(p.col+p.dx, p.row+p.dy)) { p.dx = 0; p.dy = 0; }
-        p.x=cx; p.y=cy;
     }
     p.x += p.dx * 2; p.y += p.dy * 2;
     p.col = floor(p.x / TILE); p.row = floor(p.y / TILE);

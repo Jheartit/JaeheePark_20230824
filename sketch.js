@@ -42,4 +42,7 @@ function updatePac(p) {
     if (p.dx || p.dy){ p.mouth+=0.05*p.md; if(p.mouth>0.35)p.md=-1; if(p.mouth<0.02)p.md=1;}
 
     // 콩 먹기
+    for (let i=dots.length-1; i>=0; i--) {
+        if (dots[i].c===p.col && dots[i].r===p.row) { dots.splice(i,1); score+=10; break;}
+    }
 }

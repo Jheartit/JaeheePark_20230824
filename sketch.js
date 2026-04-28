@@ -65,8 +65,31 @@ function makeGhost(c) {
     spawnGhost(g); return g;
 }
 function spawnGhost(g) {
+    for (let t=0; t<300; t++) {
+    let c=floor(random(1,COLS-1)), r=floor(random(1,ROWS-1));
+    if (!isWall(c,r) && dist(c,r,pac?pac.col:13,pac?pac.row:23)>7) {
+      g.col=c; g.row=r; g.x=c*TILE+TILE/2; g.y=r*TILE+TILE/2;
+      g.inv=90; return;
+    }
+  }
+  g.col=1; g.row=1; g.x=TILE+TILE/2; g.y=TILE+TILE/2; g.inv=90;
 }
+
 function updateGhost(g) {
+    if (g.inv>0) g.inv--;
+    let cx=g.col*TILE+TILE/2, cy=g.row*TILE+TILE/2;
+    if (abs(g.x-cx)<2 && abs(g.y-cy)<2) {
+        g.x=cx; g.y=cy;
+        let dirs=[{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
+        let ok=dirs.filter(d=>!isWall(g.col+d.x,g.row+d.y));
+        let norev=ok.filter(d=>!(d.x===-g.dx&&d.y===-g.dy));
+        let pick=random(norev.length>0?norev:ok);
+        if(pick){g.dx=pick.x;g.dy=pick.y;}
+    }
+    g.x+=g.dx*1.5; g.y+=g.dy*1.5;
+    g.col=floor(g.x/TILE); g.row=floor(g.y/TILE);
+    if(g.x<0){g.x=COLS*TILE-1;g.col=COLS-1;}
+    if(g.x>=COLS*TILE){g.x=1;g.col=0;}
 }
 
 function drawGhost(g) {

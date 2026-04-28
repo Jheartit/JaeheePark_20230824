@@ -20,8 +20,8 @@ const MAP_TEMPLATE = [
 
 const COLS = MAP_TEMPLATE[0].length; // 21
 const ROWS = MAP_TEMPLATE.length;    // 15
-const TILE = 36;
-const PAC_R = TILE * 0.15;
+const TILE = 20;
+const PAC_R = TILE * 0.2;
 
 let mapImg;
 let dots = [], pac, ghosts = [];
@@ -46,7 +46,7 @@ function makePac() {
 
 function updatePac(p) {
     let cx = p.col*TILE+TILE/2, cy = p.row*TILE+TILE/2;
-    if (abs(p.x-cx) <= 2 && abs(p.y-cy) <= 2) {
+  if (p.x === cx && p.y === cy) {
         p.x=cx; p.y=cy;
         if (!isWall(p.col+p.ndx, p.row+p.ndy)) { p.dx=p.ndx; p.dy=p.ndy; }
         if ( isWall(p.col+p.dx,  p.row+p.dy))  { p.dx=0; p.dy=0; }
@@ -68,7 +68,6 @@ function drawPac(p) {
     push(); translate(p.x, p.y);
     let a = (p.dx===-1)?PI : (p.dy===1)?HALF_PI : (p.dy===-1)?-HALF_PI : 0;
     rotate(a); noStroke();
-    fill(255,220,0,50); arc(0,0,(PAC_R+4)*2,(PAC_R+4)*2, p.mouth*PI, TWO_PI-p.mouth*PI, PIE);
     fill(255,220,0);    arc(0,0, PAC_R*2, PAC_R*2, p.mouth*PI, TWO_PI-p.mouth*PI, PIE);
     fill(0); ellipse(PAC_R*0.3, -PAC_R*0.4, PAC_R*0.25, PAC_R*0.25);
     pop();
@@ -94,7 +93,7 @@ function spawnGhost(g) {
 function updateGhost(g) {
     if (g.inv>0) g.inv--;
     let cx=g.col*TILE+TILE/2, cy=g.row*TILE+TILE/2;
-    if (abs(g.x-cx)<2 && abs(g.y-cy)<2) {
+    if (g.x === cx && g.y === cy) {
         g.x=cx; g.y=cy;
         let dirs = [{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
         let ok = dirs.filter(d => !isWall(g.col + d.x, g.row + d.y));
@@ -102,7 +101,7 @@ function updateGhost(g) {
         let pick = random(norev.length > 0?norev : ok);
         if(pick){g.dx = pick.x; g.dy = pick.y;}
     }
-    g.x += g.dx * 1.5; g.y += g.dy * 1.5;
+    g.x += g.dx * 2; g.y += g.dy * 2;
     g.col = floor(g.x/TILE); g.row = floor(g.y/TILE);
     if(g.x<0){g.x=COLS*TILE-1; g.col=COLS-1;}
     if(g.x >= COLS*TILE){g.x=1; g.col=0;}
@@ -113,7 +112,6 @@ function drawGhost(g) {
   let al=g.inv>0?lerp(60,255,(90-g.inv)/90):255;
   push(); translate(g.x,g.y);
   let s = TILE - 4;
-  fill(r,gr,b,al*0.2); arc(0,0,s+8,s+8,PI,TWO_PI); rect(-s/2-4,0,s+8,s*.5+4);
   fill(r,gr,b,al);     arc(0,0,s,s,PI,TWO_PI);     rect(-s/2,0,s,s*.5);
   beginShape(); vertex(-s/2,s*.48);
 

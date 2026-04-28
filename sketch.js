@@ -64,3 +64,44 @@ function makeGhost(c) {
     let g = { idx:1, dx:1, dy:0, inv:90};
     spawnGhost(g); return g;
 }
+
+function drawGhost(g) {
+  let [r,gr,b]=GCOLS[g.idx%5];
+  let al=g.inv>0?lerp(60,255,(90-g.inv)/90):255;
+  push(); translate(g.x,g.y);
+  let s=TILE-3; noStroke();
+  fill(r,gr,b,al*0.25); arc(0,-1,s+6,s+6,PI,TWO_PI); rect(-s/2-3,-1,s+6,s*0.5+4);
+  fill(r,gr,b,al);
+  arc(0,-1,s,s,PI,TWO_PI); rect(-s/2,-1,s,s*0.5);
+  beginShape();
+  vertex(-s/2,s*0.45);
+  for(let i=0;i<=3;i++){let wx=-s/2+(s/3)*i,wy=i%2===0?s*0.55:s*0.44;vertex(wx,wy);}
+  vertex(s/2,s*0.45); endShape(CLOSE);
+  fill(255,255,255,al); ellipse(-s*0.2,-2,s*0.3,s*0.35); ellipse(s*0.2,-2,s*0.3,s*0.35);
+  fill(0,0,180,al);    ellipse(-s*0.14,0,s*0.15,s*0.2);  ellipse(s*0.26,0,s*0.15,s*0.2);
+  pop();
+}
+
+function preload() {
+    mapImg = loadImage('Map.png');
+}
+
+function setup() {
+    createCanvas(COLS*TILE, ROWS*TILE+40);
+    frameRate(60);
+    mapImg.loadPixels();
+    mapPx = mapImg.pixels;
+    initGame();
+}
+
+function initGame() {
+    dots = [];
+    for(let r=0; r<ROWS; r++)
+        for(let c=0; c<COLS; c++)
+            if (!isWall(c,r)) dots.push({c,r});
+    pac = makePac();
+    ghosts = [];
+    for(let i=0; i<5; i++)
+        ghosts.push(makeGhost(i));
+    score = 0; energy = 3; state='PLAY'; restartT=0; flashT=0;
+}

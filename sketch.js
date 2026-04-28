@@ -13,5 +13,9 @@ function isWall(c, r) {
         return true;
     }
     if (!mapPx) return false;
-    
+    let px = floor((c + 0.5) * (mapImg.width  / COLS));
+    let py = floor((r + 0.5) * (mapImg.height / ROWS));
+    let idx = 4 * (py * mapImg.width + px);
+    let brightness = (mapPx[idx] + mapPx[idx+1] + mapPx[idx+2]) / 3;
+    return brightness > 40; // 밝은 부분이 벽
 }

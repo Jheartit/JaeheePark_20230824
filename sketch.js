@@ -21,12 +21,14 @@ const MAP_TEMPLATE = [
 const COLS = MAP_TEMPLATE[0].length; // 21
 const ROWS = MAP_TEMPLATE.length;    // 15
 const TILE = 36;
+const PAC_R = TILE * 0.15;
 
 let mapImg;
 let dots = [], pac, ghosts = [];
 let score = 0, energy = 3;
 let state = 'PLAY'; 
 let restartT = 0, flashT = 0;
+let keyDown = false;
 
 // 벽 판별
 function isWall(c, r) {
@@ -43,32 +45,32 @@ function makePac() {
 }
 
 function updatePac(p) {
-    let cx = p.col * TILE + TILE/2, cy = p.row * TILE + TILE/2;
-    if (abs(p.x - cx) <=2 && abs(p.y - cy) <= 2) {
+    let cx = p.col*TILE+TILE/2, cy = p.row*TILE+TILE/2;
+    if (abs(p.x-cx) <= 2 && abs(p.y-cy) <= 2) {
         p.x=cx; p.y=cy;
-        if (!isWall(p.col+p.ndx, p.row+p.ndy)) { p.dx = p.ndx; p.dy = p.ndy; }
-        if (isWall(p.col+p.dx, p.row+p.dy)) { p.dx = 0; p.dy = 0; }
+        if (!isWall(p.col+p.ndx, p.row+p.ndy)) { p.dx=p.ndx; p.dy=p.ndy; }
+        if ( isWall(p.col+p.dx,  p.row+p.dy))  { p.dx=0; p.dy=0; }
     }
-    p.x += p.dx * 2; p.y += p.dy * 2;
-    p.col = floor(p.x / TILE); p.row = floor(p.y / TILE);
-    if (p.x<0) {p.x=COLS*TILE-1; p.col=COLS-1;}
-    if (p.x>=COLS*TILE){p.x=1; p.col=0;}
+    p.x += p.dx*2; p.y += p.dy*2;
+    p.col = floor(p.x/TILE); p.row = floor(p.y/TILE);
+    if (p.x < 0)          { p.x = COLS*TILE-1; p.col = COLS-1; }
+    if (p.x >= COLS*TILE) { p.x = 1;           p.col = 0; }
+    // 키 누를 때 입 닫힘, 뗄 때 열림
+    if (keyDown) { p.mouth = max(0.02, p.mouth - 0.06); }
+    else { p.mouth = min(0.35, p.mouth + 0.06); }
+    for (let i = dots.length-1; i >= 0; i--)
+        if (dots[i].c===p.col && dots[i].r===p.row) { dots.splice(i,1); score+=10; break; 
 
-    if (p.dx || p.dy){ p.mouth+=0.05*p.md; if(p.mouth>0.35)p.md=-1; if(p.mouth<0.02)p.md=1;}
-
-    // 콩 먹기
-    for (let i=dots.length-1; i>=0; i--) {
-        if (dots[i].c===p.col && dots[i].r===p.row) { dots.splice(i,1); score+=10; break;}
+        }
     }
-}
 
 function drawPac(p) {
     push(); translate(p.x, p.y);
     let a = (p.dx===-1)?PI : (p.dy===1)?HALF_PI : (p.dy===-1)?-HALF_PI : 0;
     rotate(a); noStroke();
-    fill(255,220,0,60); arc(0,0,TILE+6,TILE+6, p.mouth*PI, TWO_PI-p.mouth*PI, PIE);
-    fill(255,220,0);    arc(0,0,TILE-2,TILE-2, p.mouth*PI, TWO_PI-p.mouth*PI, PIE);
-    fill(0); ellipse(4,-6,4,4);
+    fill(255,220,0,50); arc(0,0,(PAC_R+4)*2,(PAC_R+4)*2, p.mouth*PI, TWO_PI-p.mouth*PI, PIE);
+    fill(255,220,0);    arc(0,0, PAC_R*2, PAC_R*2, p.mouth*PI, TWO_PI-p.mouth*PI, PIE);
+    fill(0); ellipse(PAC_R*0.3, -PAC_R*0.4, PAC_R*0.25, PAC_R*0.25);
     pop();
 }
 
@@ -167,8 +169,8 @@ function draw() {
   noStroke();
   for(let d of dots){
     let x=d.c*TILE+TILE/2, y=d.r*TILE+TILE/2;
-    fill(255,210,150,70); ellipse(x,y,10,10);
-    fill(255,210,150);    ellipse(x,y,5,5);
+    fill(255,210,150,80); ellipse(x,y,TILE*0.22,TILE*0.22);
+    fill(255,210,150);    ellipse(x,y,TILE*0.14,TILE*0.14);
   }
  
   drawPac(pac);
@@ -213,8 +215,13 @@ function draw() {
 
 function keyPressed() {
     if(state!=='PLAY') { if(keyCode===ENTER || key==='r' || key==='R') initGame(); return; }
+    keyDown = true;
     if(keyCode===UP_ARROW) { pac.ndx=0; pac.ndy=-1; }
     if(keyCode===DOWN_ARROW) { pac.ndx=0; pac.ndy=1; }
     if(keyCode===LEFT_ARROW) { pac.ndx=-1; pac.ndy=0; }
     if(keyCode===RIGHT_ARROW) { pac.ndx=1; pac.ndy=0; }
+}
+
+function keyReleased() {
+    keyDown = false;
 }

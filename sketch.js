@@ -1,27 +1,27 @@
 // 1=벽, 0=길(콩), 2=워프통로, 3=유령집(콩없음)
 
 const MAP_TEMPLATE = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
-  [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1], 
-  [1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1], 
-  [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1], 
-  [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1], 
-  [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1], 
-  [1, 1, 0, 1, 0, 1, 0, 1, 3, 3, 3, 3, 3, 1, 0, 1, 0, 1, 0, 1, 1], 
-  [2, 0, 0, 1, 0, 0, 0, 1, 3, 3, 3, 3, 3, 1, 0, 0, 0, 1, 0, 0, 2], //워프행
-  [1, 1, 0, 1, 0, 1, 0, 1, 3, 3, 3, 3, 3, 1, 0, 1, 0, 1, 0, 1, 1], 
-  [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1], 
-  [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1], 
-  [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1], 
-  [1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1], 
-  [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1], 
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
+  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0], 
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+  [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0], 
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+  [0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0], 
+  [1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1], 
+  [2, 0, 0, 0, 0, 0, 0, 1, 0, 3, 3, 3, 0, 1, 0, 0, 0, 0, 0, 0, 2], // 워프행
+  [1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1], 
+  [0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0], 
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+  [0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0], 
+  [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0], 
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0], 
 ];
 
 const COLS = MAP_TEMPLATE[0].length; // 21
 const ROWS = MAP_TEMPLATE.length;    // 15
-const TILE = 20;
-const PAC_R = TILE * 0.2;
+const TILE = 40;
+const SPEED = 2;
 
 let mapImg;
 let dots = [], pac, ghosts = [];
@@ -40,36 +40,55 @@ function isWall(c, r) {
 // 팩맨
 function makePac() {
     return {
-        col:9, row:11, x:9*TILE+TILE/2, y:11*TILE+TILE/2, dx:0, dy:0, ndx:0, ndy:0, mouth:0.25, md:1
-    };
+        col:10, row:10, x:10*TILE+TILE/2, y:10*TILE+TILE/2,
+        dx:0, dy:0, ndx:0, ndy:0, mouth:0.3};
 }
 
 function updatePac(p) {
     let cx = p.col*TILE+TILE/2, cy = p.row*TILE+TILE/2;
-  if (p.x === cx && p.y === cy) {
-        p.x=cx; p.y=cy;
-        if (!isWall(p.col+p.ndx, p.row+p.ndy)) { p.dx=p.ndx; p.dy=p.ndy; }
-        if ( isWall(p.col+p.dx,  p.row+p.dy))  { p.dx=0; p.dy=0; }
+    if (p.x === cx && p.y === cy) {
+    // 다음 방향 전환 가능하면 적용
+    if (!isWall(p.col + p.ndx, p.row + p.ndy)) {
+      p.dx = p.ndx; p.dy = p.ndy;
     }
-    p.x += p.dx*2; p.y += p.dy*2;
-    p.col = floor(p.x/TILE); p.row = floor(p.y/TILE);
-    if (p.x < 0)          { p.x = COLS*TILE-1; p.col = COLS-1; }
-    if (p.x >= COLS*TILE) { p.x = 1;           p.col = 0; }
-    // 키 누를 때 입 닫힘, 뗄 때 열림
-    if (keyDown) { p.mouth = max(0.02, p.mouth - 0.06); }
-    else { p.mouth = min(0.35, p.mouth + 0.06); }
-    for (let i = dots.length-1; i >= 0; i--)
-        if (dots[i].c===p.col && dots[i].r===p.row) { dots.splice(i,1); score+=10; break; 
-
-        }
+    // 현재 방향이 막혔으면 정지
+    if (isWall(p.col + p.dx, p.row + p.dy)) {
+      p.dx = 0; p.dy = 0;
     }
+}
+ 
+  p.x += p.dx * SPEED;
+  p.y += p.dy * SPEED;
+ 
+  // 타일 좌표 갱신
+  p.col = floor(p.x / TILE);
+  p.row = floor(p.y / TILE);
+ 
+  // 워프
+  if (p.x < 0)            { p.x = COLS*TILE - SPEED; p.col = COLS-1; }
+  if (p.x >= COLS * TILE) { p.x = SPEED;             p.col = 0; }
+ 
+  // 입 애니메이션: 키 누를 때 닫힘, 뗄 때 열림
+  if (keyDown) p.mouth = max(0.02, p.mouth - 0.06);
+  else         p.mouth = min(0.35, p.mouth + 0.06);
+ 
+  // 콩 먹기
+  for (let i = dots.length - 1; i >= 0; i--) {
+    if (dots[i].c === p.col && dots[i].r === p.row) {
+      dots.splice(i, 1); score += 10; break;
+    }
+  }
+}
 
 function drawPac(p) {
     push(); translate(p.x, p.y);
     let a = (p.dx===-1)?PI : (p.dy===1)?HALF_PI : (p.dy===-1)?-HALF_PI : 0;
     rotate(a); noStroke();
-    fill(255,220,0);    arc(0,0, PAC_R*2, PAC_R*2, p.mouth*PI, TWO_PI-p.mouth*PI, PIE);
-    fill(0); ellipse(PAC_R*0.3, -PAC_R*0.4, PAC_R*0.25, PAC_R*0.25);
+    let r = TILE * 0.42;
+    fill(255,220,0);    
+    arc(0, 0, r*2, r*2, p.mouth*PI, TWO_PI - p.mouth*PI, PIE);
+    fill(0);
+    ellipse(r*0.3, -r*0.4, r*0.25, r*0.25);
     pop();
 }
 
@@ -93,32 +112,41 @@ function spawnGhost(g) {
 function updateGhost(g) {
     if (g.inv>0) g.inv--;
     let cx=g.col*TILE+TILE/2, cy=g.row*TILE+TILE/2;
+
     if (g.x === cx && g.y === cy) {
         g.x=cx; g.y=cy;
         let dirs = [{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
         let ok = dirs.filter(d => !isWall(g.col + d.x, g.row + d.y));
-        let norev = ok.filter(d=>!(d.x === -g.dx && d.y === -g.dy));
-        let pick = random(norev.length > 0?norev : ok);
+        let nr   = ok.filter(d => !(d.x === -g.dx && d.y === -g.dy));
+        let pick = random(nr.length > 0 ? nr : ok);
         if(pick){g.dx = pick.x; g.dy = pick.y;}
     }
-    g.x += g.dx * 2; g.y += g.dy * 2;
-    g.col = floor(g.x/TILE); g.row = floor(g.y/TILE);
-    if(g.x<0){g.x=COLS*TILE-1; g.col=COLS-1;}
-    if(g.x >= COLS*TILE){g.x=1; g.col=0;}
+    g.x += g.dx * SPEED;
+    g.y += g.dy * SPEED;
+    g.col = floor(g.x / TILE);
+    g.row = floor(g.y / TILE);
+ 
+    if (g.x < 0)            { g.x = COLS*TILE - SPEED; g.col = COLS-1; }
+    if (g.x >= COLS * TILE) { g.x = SPEED;             g.col = 0; }
 }
 
 function drawGhost(g) {
   let [r,gr,b]=GC[g.idx%5];
   let al=g.inv>0?lerp(60,255,(90-g.inv)/90):255;
-  push(); translate(g.x,g.y);
-  let s = TILE - 4;
-  fill(r,gr,b,al);     arc(0,0,s,s,PI,TWO_PI);     rect(-s/2,0,s,s*.5);
-  beginShape(); vertex(-s/2,s*.48);
+  push(); translate(g.x,g.y); noStroke();
+  let s = TILE * 0.82;
+  fill(r,gr,b,al);     arc(0,0,s,s,PI,TWO_PI);     rect(-s/2,0,s,s*0.5);
+  beginShape(); vertex(-s/2,s*0.48);
 
-  for (let i=0;i<=3;i++) vertex(-s/2+(s/3)*i, i%2===0?s*.58:s*.46);
-  vertex(s/2,s*.48); endShape(CLOSE);
-  fill(255,255,255,al); ellipse(-s*.2,s*.05,s*.28,s*.34); ellipse(s*.2,s*.05,s*.28,s*.34);
-  fill(0,0,180,al);     ellipse(-s*.14,s*.08,s*.13,s*.2);  ellipse(s*.26,s*.08,s*.13,s*.2);
+  for (let i = 0; i <= 3; i++) vertex(-s/2 + (s/3)*i, i%2===0 ? s*0.58 : s*0.46);
+  vertex(s/2, s*0.48);
+  endShape(CLOSE);
+  fill(255, 255, 255, al);
+  ellipse(-s*0.2, s*0.05, s*0.28, s*0.34);
+  ellipse( s*0.2, s*0.05, s*0.28, s*0.34);
+  fill(0, 0, 180, al);
+  ellipse(-s*0.14, s*0.08, s*0.13, s*0.2);
+  ellipse( s*0.26, s*0.08, s*0.13, s*0.2);
   pop();
 }
 
@@ -139,7 +167,8 @@ function initGame() {
         for(let c=0; c<COLS; c++)
              if (MAP_TEMPLATE[r][c] === 0) dots.push({c, r});
     pac = makePac();
-    ghosts = []; for (let i=0;i<5;i++) ghosts.push(makeGhost(i));
+    ghosts = []; 
+    for (let i=0;i<5;i++) ghosts.push(makeGhost(i));
     score=0; energy=3; state='PLAY'; restartT=0; flashT=0;
 }
 
@@ -150,7 +179,7 @@ function draw() {
         for(let g of ghosts) {
             updateGhost(g);
             if (g.inv>0) continue;
-            if(dist(pac.x,pac.y,g.x,g.y)<TILE*0.75) {
+            if(dist(pac.x,pac.y,g.x,g.y)<TILE*0.7) {
                 energy--; flashT=60; spawnGhost(g);
                 if (energy<=0) { state='LOSE'; restartT=0; }
             }
@@ -167,8 +196,7 @@ function draw() {
   noStroke();
   for(let d of dots){
     let x=d.c*TILE+TILE/2, y=d.r*TILE+TILE/2;
-    fill(255,210,150,80); ellipse(x,y,TILE*0.22,TILE*0.22);
-    fill(255,210,150);    ellipse(x,y,TILE*0.14,TILE*0.14);
+    fill(255,210,150);    ellipse(x,y,TILE*0.15,TILE*0.15);
   }
  
   drawPac(pac);
@@ -222,4 +250,6 @@ function keyPressed() {
 
 function keyReleased() {
     keyDown = false;
+    pac.dx = 0; pac.dy = 0;
+    pac.ndx = 0; pac.ndy = 0;
 }

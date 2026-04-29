@@ -62,6 +62,8 @@ let score = 0, energy = 3;
 let state = 'PLAY';
 let restartT = 0, flashT = 0;
 let keyDown = false;
+let nextGhostScore = 200; // 유령 추가 소환 기준 점수
+
 
 // 벽 판별
 function isWall(c, r) {
@@ -83,7 +85,7 @@ function makePac() {
   return {
     col: sc, row: sr,
     x: MAP_X + sc * TILE + TILE / 2, y: MAP_Y + sr * TILE + TILE / 2,
-    dx: 0, dy: 0, lastDx:1, lastDy:0, mouth: 0.05, mouthDir: 1
+    dx: 0, dy: 0, lastDx: 1, lastDy: 0, mouth: 0.05, mouthDir: 1
   };
 }
 
@@ -210,6 +212,7 @@ function initGame() {
   pac = makePac(); ghosts = [];
   for (let i = 0; i < 5; i++) ghosts.push(makeGhost(i));
   score = 0; energy = 3; state = 'PLAY'; restartT = 0; flashT = 0; keyDown = false;
+  nextGhostScore = 200; // 200점마다 유령 1마리 추가
 }
 
 // 맵 그리기
@@ -249,6 +252,10 @@ function draw() {
     }
     if (flashT > 0) flashT--;
     if (dots.length === 0) { state = 'WIN'; restartT = 0; }
+    if (score >= nextGhostScore) {
+      ghosts.push(makeGhost(ghosts.length));
+      nextGhostScore += 200;
+    }
   }
 
   drawMap();
@@ -264,9 +271,9 @@ function draw() {
   for (let g of ghosts) drawGhost(g);
 
   // UI 바
-  let uy = MAP_Y + ROWS*TILE + 8;
-  fill(5, 5, 25); noStroke(); rect(0, MAP_Y+ROWS*TILE, CANVAS_W, 50);
-  stroke(0, 180, 255, 120); strokeWeight(1); line(0, MAP_Y+ROWS*TILE, CANVAS_W, MAP_Y+ROWS*TILE); noStroke();
+  let uy = MAP_Y + ROWS * TILE + 8;
+  fill(5, 5, 25); noStroke(); rect(0, MAP_Y + ROWS * TILE, CANVAS_W, 50);
+  stroke(0, 180, 255, 120); strokeWeight(1); line(0, MAP_Y + ROWS * TILE, CANVAS_W, MAP_Y + ROWS * TILE); noStroke();
   fill(255, 200, 0); textFont('monospace'); textSize(20); textAlign(LEFT, CENTER);
   text('SCORE ' + nf(score, 5), 10, uy + 20);
 
@@ -318,7 +325,7 @@ function keyPressed() {
   // 다음 칸이 벽이 아닐 때만 방향 변경
   if (!isWall(pac.col + nx, pac.row + ny)) {
     pac.dx = nx; pac.dy = ny;
-    pac.lastDx=nx; pac.lastDy=ny;
+    pac.lastDx = nx; pac.lastDy = ny;
   }
 }
 

@@ -62,7 +62,6 @@ let score = 0, energy = 3;
 let state = 'PLAY';
 let restartT = 0, flashT = 0;
 let keyDown = false;
-let nextGhostScore = 100; // 유령 추가 소환 기준 점수
 
 
 // 벽 판별
@@ -91,17 +90,17 @@ function makePac() {
 
 function updatePac(p) {
   if (p.dx === 0 && p.dy === 0) return;
-  let lx = round(p.x - MAP_X);
-  let ly = round(p.y - MAP_Y);
-  let onCX = (lx - TILE / 2) % TILE === 0;
-  let onCY = (ly - TILE / 2) % TILE === 0;
-  if (onCX && onCY) {
-    let c = (lx - TILE / 2) / TILE, r = (ly - TILE / 2) / TILE;
-    if (isWall(c + p.dx, r + p.dy)) { p.dx = 0; p.dy = 0; return; }
-  }
+
   p.x += p.dx * SPEED; p.y += p.dy * SPEED;
   p.col = floor((p.x - MAP_X) / TILE);
   p.row = floor((p.y - MAP_Y) / TILE);
+
+  let cx = MAP_X + p.col * TILE + TILE / 2;
+  let cy = MAP_Y + p.row * TILE + TILE / 2;
+  if (abs(p.x - cx) < SPEED && abs(p.y - cy) < SPEED) {
+    p.x = cx; p.y = cy;
+    if (isWall(p.col + p.dx, p.row + p.dy)) { p.dx = 0; p.dy = 0; }
+  }
 
   if (MAP_TEMPLATE[p.row] && MAP_TEMPLATE[p.row][0] === 2) {
     if (p.x < MAP_X) { p.x = MAP_X + COLS * TILE - TILE / 2; p.col = COLS - 1; }
@@ -142,18 +141,20 @@ function makeGhost(i) {
 }
 
 function spawnGhost(g) {
-  let houseCells = [];
-  for (let r = 0; r < ROWS; r++)
-    for (let c = 0; c < COLS; c++)
-      if (MAP_TEMPLATE[r][c] === 3) houseCells.push({ c, r });
-
   let occupied = ghosts.filter(og => og !== g).map(og => og.col + ',' + og.row);
-  let free = houseCells.filter(cell => !occupied.includes(cell.c + ',' + cell.r));
-  let pool = free.length > 0 ? free : houseCells;
+  let cr = floor(ROWS / 2), cc = floor(COLS / 2);
+  let pool = [];
+  for (let r = cr - 5; r < cr + 5; r++)
+    for (let c = cc - 5; c < cc + 5; c++)
+      if (r >= 0 && r < ROWS && c >= 0 && c < COLS && MAP_TEMPLATE[r][c] === 0
+        && !occupied.includes(c + ',' + r)) pool.push({ c, r });
 
-  if (pool.length === 0) pool = [{ c: floor(COLS / 2), r: floor(ROWS / 2) }];
-  let cell = random(pool);
+  if (pool.length === 0)
+    for (let r = 1; r < ROWS - 1; r++)
+      for (let c = 1; c < COLS - 1; c++)
+        if (MAP_TEMPLATE[r][c] === 0 && !occupied.includes(c + ',' + r)) pool.push({ c, r });
 
+  let cell = pool.length > 0 ? random(pool) : { c: cc, r: cr };
   g.col = cell.c; g.row = cell.r;
   g.x = MAP_X + cell.c * TILE + TILE / 2;
   g.y = MAP_Y + cell.r * TILE + TILE / 2;
@@ -162,23 +163,20 @@ function spawnGhost(g) {
 
 function updateGhost(g) {
   if (g.inv > 0) g.inv--;
-  let onCenterX = (g.x - TILE / 2) % TILE === 0;
-  let onCenterY = (g.y - TILE / 2) % TILE === 0;
 
-  if (onCenterX && onCenterY) {
-    let c = (g.x - TILE / 2) / TILE;
-    let r = (g.y - TILE / 2) / TILE;
+  g.x += g.dx * SPEED; g.y += g.dy * SPEED;
+  g.col = floor((g.x - MAP_X) / TILE); g.row = floor((g.y - MAP_Y) / TILE);
+
+  let cx = MAP_X + g.col * TILE + TILE / 2;
+  let cy = MAP_Y + g.row * TILE + TILE / 2;
+  if (abs(g.x - cx) < SPEED && abs(g.y - cy) < SPEED) {
+    g.x = cx; g.y = cy;
     let dirs = [{ x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }];
-    let ok = dirs.filter(d => !isWallGhost(c + d.x, r + d.y)); 
+    let ok = dirs.filter(d => !isWallGhost(g.col + d.x, g.row + d.y));
     let nr = ok.filter(d => !(d.x === -g.dx && d.y === -g.dy));
     let pick = random(nr.length > 0 ? nr : ok);
     if (pick) { g.dx = pick.x; g.dy = pick.y; }
   }
-
-  g.x += g.dx * SPEED;
-  g.y += g.dy * SPEED;
-  g.col = floor(g.x / TILE);
-  g.row = floor(g.y / TILE);
 
   if (MAP_TEMPLATE[g.row] && MAP_TEMPLATE[g.row][0] === 2) {
     if (g.x < MAP_X) { g.x = MAP_X + COLS * TILE - TILE / 2; g.col = COLS - 1; }
@@ -222,7 +220,6 @@ function initGame() {
   pac = makePac(); ghosts = [];
   for (let i = 0; i < 5; i++) ghosts.push(makeGhost(i));
   score = 0; energy = 3; state = 'PLAY'; restartT = 0; flashT = 0; keyDown = false;
-  nextGhostScore = 100;
 }
 
 // 맵 그리기
@@ -262,10 +259,6 @@ function draw() {
     }
     if (flashT > 0) flashT--;
     if (dots.length === 0) { state = 'WIN'; restartT = 0; }
-    while (score >= nextGhostScore) {
-      ghosts.push(makeGhost(ghosts.length));
-      nextGhostScore += 100;
-    }
   }
 
   drawMap();

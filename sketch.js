@@ -141,13 +141,19 @@ function makeGhost(i) {
 }
 
 function spawnGhost(g) {
-  for (let t = 0; t < 300; t++) {
-    let c = floor(random(1, COLS - 1)), r = floor(random(1, ROWS - 1));
-    if (!isWall(c, r) && dist(c, r, pac ? pac.col : 30, pac ? pac.row : 37) > 5) {
-      g.col = c; g.row = r; g.x = c * TILE + TILE / 2; g.y = r * TILE + TILE / 2; g.inv = 90; return;
-    }
-  }
-  g.col = 1; g.row = 3; g.x = TILE + TILE / 2; g.y = 3 * TILE + TILE / 2; g.inv = 90;
+  let houseCells = [];
+  for (let r = 0; r < ROWS; r++)
+    for (let c = 0; c < COLS; c++)
+      if (MAP_TEMPLATE[r][c] === 3) houseCells.push({ c, r });
+
+  let cell = houseCells.length > 0
+    ? random(houseCells)
+    : { c: floor(COLS / 2), r: floor(ROWS / 2) };
+
+  g.col = cell.c; g.row = cell.r;
+  g.x = MAP_X + cell.c * TILE + TILE / 2;
+  g.y = MAP_Y + cell.r * TILE + TILE / 2;
+  g.inv = 90;
 }
 
 function updateGhost(g) {
@@ -159,7 +165,7 @@ function updateGhost(g) {
     let c = (g.x - TILE / 2) / TILE;
     let r = (g.y - TILE / 2) / TILE;
     let dirs = [{ x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }];
-    let ok = dirs.filter(d => !isWall(c + d.x, r + d.y));
+    let ok = dirs.filter(d => !isWallGhost(c + d.x, r + d.y));
     let nr = ok.filter(d => !(d.x === -g.dx && d.y === -g.dy));
     let pick = random(nr.length > 0 ? nr : ok);
     if (pick) { g.dx = pick.x; g.dy = pick.y; }
@@ -252,14 +258,14 @@ function draw() {
     }
     if (flashT > 0) flashT--;
     if (dots.length === 0) { state = 'WIN'; restartT = 0; }
-    while(score >= nextGhostScore) {
+    while (score >= nextGhostScore) {
       ghosts.push(makeGhost(ghosts.length));
       nextGhostScore += 100;
     }
   }
 
   drawMap();
-    if(flashT>0&&flashT%10<5){fill(255,0,0,55);noStroke();rect(MAP_X,MAP_Y,COLS*TILE,ROWS*TILE);}
+  if (flashT > 0 && flashT % 10 < 5) { fill(255, 0, 0, 55); noStroke(); rect(MAP_X, MAP_Y, COLS * TILE, ROWS * TILE); }
 
   // 콩
   noStroke();

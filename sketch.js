@@ -53,6 +53,10 @@ const MAP_Y = 20;  // 맵 상단 오프셋
 const CANVAS_W = 1124; // 전체 캔버스 가로 
 const CANVAS_H = 654;  // 전체 캔버스 세로 
 
+const CHAR_SIZE = TILE * 2.2;  // 팩맨, 유령 크기 (타일 2.2배)
+const DOT_SIZE  = TILE * 3;  // 콩 크기 (타일 0.7배)
+const DOT_STEP  = 5;           // 콩 간격 (2칸마다 1개)
+
 let dots = [], pac, ghosts = [];
 let score = 0, energy = 3;
 let state = 'PLAY';

@@ -103,9 +103,13 @@ function makeGhost(i) {
 
 function spawnGhost(g) {
     for (let t=0; t<300; t++) {
-    let c = floor(random(1,COLS-1)), r=floor(random(1,ROWS-1));
-    if (!isWall(c,r) && dist(c,r,pac?pac.col:10,pac?pac.row:11)>5) {
-      g.col=c; g.row=r; g.x=c*TILE+TILE/2; g.y=r*TILE+TILE/2; g.inv=90; return;
+    let c = floor(random(1,COLS-1)); 
+    let r=floor(random(1,ROWS-1));
+    if (!isWall(c,r) && dist(c,r,pac?pac.col:10, pac?pac.row:10)>5) {
+      g.col=c; g.row=r;
+      g.x=c*TILE+TILE/2;
+      g.y=r*TILE+TILE/2;
+      g.inv=90; return;
     }
   }
   g.col=1; g.row=1; g.x=TILE+TILE/2; g.y=TILE+TILE/2; g.inv=90;
@@ -113,7 +117,8 @@ function spawnGhost(g) {
 
 function updateGhost(g) {
     if (g.inv>0) g.inv--;
-    let cx=g.col*TILE+TILE/2, cy=g.row*TILE+TILE/2;
+    let cx=g.col*TILE+TILE/2;
+    let cy=g.row*TILE+TILE/2;
 
     if (g.x === cx && g.y === cy) {
         g.x=cx; g.y=cy;

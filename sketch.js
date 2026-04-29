@@ -55,7 +55,7 @@ const CANVAS_H = 916;  // 전체 캔버스 세로
 
 const CHAR_SIZE = TILE * 1;  // 팩맨, 유령 크기 
 const DOT_SIZE = TILE * 0.7;  // 콩 크기 
-const DOT_STEP = 7;           // 콩 간격 (2칸마다 1개)
+const DOT_STEP = 7;           // 콩 간격
 
 let dots = [], pac, ghosts = [];
 let score = 0, energy = 3;
@@ -110,7 +110,7 @@ function updatePac(p) {
     if (p.mouth >= 0.35) p.mouthDir = -1;
     if (p.mouth <= 0.02) p.mouthDir = 1;
   } else {
-    p.mouth = 0; // 서서히 닫힘
+    p.mouth = 0;
   }
   // 콩 먹기
   for (let i = dots.length - 1; i >= 0; i--) {

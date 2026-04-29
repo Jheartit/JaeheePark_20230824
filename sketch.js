@@ -62,7 +62,7 @@ let score = 0, energy = 3;
 let state = 'PLAY';
 let restartT = 0, flashT = 0;
 let keyDown = false;
-let nextGhostScore = 200; // 유령 추가 소환 기준 점수
+let nextGhostScore = 100; // 유령 추가 소환 기준 점수
 
 
 // 벽 판별
@@ -254,7 +254,7 @@ function draw() {
     if (dots.length === 0) { state = 'WIN'; restartT = 0; }
     if (score >= nextGhostScore) {
       ghosts.push(makeGhost(ghosts.length));
-      nextGhostScore += 200;
+      nextGhostScore += 100;
     }
   }
 

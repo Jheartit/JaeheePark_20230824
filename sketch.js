@@ -252,7 +252,7 @@ function draw() {
     }
     if (flashT > 0) flashT--;
     if (dots.length === 0) { state = 'WIN'; restartT = 0; }
-    if (score >= nextGhostScore) {
+    while(score >= nextGhostScore) {
       ghosts.push(makeGhost(ghosts.length));
       nextGhostScore += 100;
     }

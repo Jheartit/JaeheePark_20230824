@@ -51,7 +51,7 @@ const SPEED = 5;
 const MAP_X = 194; // 맵 좌측 오프셋 
 const MAP_Y = 28;  // 맵 상단 오프셋 
 const CANVAS_W = 1608; // 전체 캔버스 가로 
-const CANVAS_H = 916;  // 전체 캔버스 세로 
+const CANVAS_H = 910;  // 전체 캔버스 세로 
 
 const CHAR_SIZE = TILE * 1;  // 팩맨, 유령 크기 
 const DOT_SIZE = TILE * 0.7;  // 콩 크기 

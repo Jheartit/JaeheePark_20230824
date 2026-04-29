@@ -47,11 +47,11 @@ const MAP_TEMPLATE = [
 const COLS = MAP_TEMPLATE[0].length;
 const ROWS = MAP_TEMPLATE.length;
 const TILE = 20;
-const SPEED = 5;
+const SPEED = 4;
 const MAP_X = 194; // 맵 좌측 오프셋 
 const MAP_Y = 28;  // 맵 상단 오프셋 
 const CANVAS_W = 1608; // 전체 캔버스 가로 
-const CANVAS_H = 910;  // 전체 캔버스 세로 
+const CANVAS_H = 916;  // 전체 캔버스 세로 
 
 const CHAR_SIZE = TILE * 1;  // 팩맨, 유령 크기 
 const DOT_SIZE = TILE * 0.7;  // 콩 크기 
@@ -264,10 +264,10 @@ function draw() {
   for (let g of ghosts) drawGhost(g);
 
   // UI 바
-  let uy = ROWS * TILE;
-  fill(5, 5, 25); noStroke(); rect(0, uy, COLS * TILE, 40);
-  stroke(0, 180, 255, 120); strokeWeight(1); line(0, ROWS * TILE, COLS * TILE, ROWS * TILE); noStroke();
-  fill(255, 200, 0); textFont('monospace'); textSize(14); textAlign(LEFT, CENTER);
+  let uy = MAP_Y + ROWS*TILE + 8;
+  fill(5, 5, 25); noStroke(); rect(0, MAP_Y+ROWS*TILE, CANVAS_W, 50);
+  stroke(0, 180, 255, 120); strokeWeight(1); line(0, MAP_Y+ROWS*TILE, CANVAS_W, MAP_Y+ROWS*TILE); noStroke();
+  fill(255, 200, 0); textFont('monospace'); textSize(20); textAlign(LEFT, CENTER);
   text('SCORE ' + nf(score, 5), 10, uy + 20);
 
   for (let i = 0; i < 3; i++) {
@@ -281,8 +281,8 @@ function draw() {
     endShape(CLOSE); pop();
   }
 
-  fill(0, 200, 255); textAlign(CENTER, CENTER); textSize(11);
-  text('DOTS ' + dots.length, COLS * TILE / 2, uy + 20);
+  fill(0, 200, 255); textAlign(CENTER, CENTER); textSize(20);
+  text('먹이 ' + dots.length, COLS * TILE / 2, uy + 20);
 
   // 오버레이
   if (state !== 'PLAY') {

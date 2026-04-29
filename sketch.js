@@ -74,15 +74,17 @@ function isWall(c, r) {
 function makePac() {
   // 시작: row 37 중앙 근처 길
   let sc = 30, sr = 20;
-  outer: for (let dr=0; dr<ROWS; dr++) {
-    for (let dc=0; dc<COLS; dc++) {
-      let r=min(ROWS-1,max(0,sr+dr)), c=min(COLS-1,max(0,sc+dc));
-      if (MAP_TEMPLATE[r][c]===0){sc=c;sr=r;break outer;}
+  outer: for (let dr = 0; dr < ROWS; dr++) {
+    for (let dc = 0; dc < COLS; dc++) {
+      let r = min(ROWS - 1, max(0, sr + dr)), c = min(COLS - 1, max(0, sc + dc));
+      if (MAP_TEMPLATE[r][c] === 0) { sc = c; sr = r; break outer; }
     }
   }
-  return {col:sc, row:sr,
-           x:MAP_X+sc*TILE+TILE/2, y:MAP_Y+sr*TILE+TILE/2,
-           dx:0, dy:0, mouth:0.05, mouthDir:1};
+  return {
+    col: sc, row: sr,
+    x: MAP_X + sc * TILE + TILE / 2, y: MAP_Y + sr * TILE + TILE / 2,
+    dx: 0, dy: 0, mouth: 0.05, mouthDir: 1
+  };
 }
 
 function updatePac(p) {
@@ -99,8 +101,8 @@ function updatePac(p) {
   p.row = floor((p.y - MAP_Y) / TILE);
 
   if (MAP_TEMPLATE[p.row] && MAP_TEMPLATE[p.row][0] === 2) {
-    if (p.x < MAP_X)             { p.x=MAP_X+COLS*TILE-TILE/2; p.col=COLS-1; }
-    if (p.x >= MAP_X+COLS*TILE)  { p.x=MAP_X+TILE/2;           p.col=0; }
+    if (p.x < MAP_X) { p.x = MAP_X + COLS * TILE - TILE / 2; p.col = COLS - 1; }
+    if (p.x >= MAP_X + COLS * TILE) { p.x = MAP_X + TILE / 2; p.col = 0; }
   }
   // 입 애니메이션
   if (keyDown) {
@@ -111,8 +113,11 @@ function updatePac(p) {
     p.mouth = max(0.02, p.mouth - 0.06); // 서서히 닫힘
   }
   // 콩 먹기
-  for (let i = dots.length - 1; i >= 0; i--)
-    if (dots[i].c === p.col && dots[i].r === p.row) { dots.splice(i, 1); score += 10; break; }
+  for (let i = dots.length - 1; i >= 0; i--) {
+    let dx = MAP_X + dots[i].c * TILE + TILE / 2 - p.x;
+    let dy = MAP_Y + dots[i].r * TILE + TILE / 2 - p.y;
+    if (sqrt(dx * dx + dy * dy) < TILE * 1.2) { dots.splice(i, 1); score += 10; break; }
+  }
 }
 
 function drawPac(p) {
@@ -164,8 +169,8 @@ function updateGhost(g) {
   g.row = floor(g.y / TILE);
 
   if (MAP_TEMPLATE[g.row] && MAP_TEMPLATE[g.row][0] === 2) {
-    if(g.x<MAP_X)            {g.x=MAP_X+COLS*TILE-TILE/2;g.col=COLS-1;}
-    if(g.x>=MAP_X+COLS*TILE) {g.x=MAP_X+TILE/2;g.col=0;}
+    if (g.x < MAP_X) { g.x = MAP_X + COLS * TILE - TILE / 2; g.col = COLS - 1; }
+    if (g.x >= MAP_X + COLS * TILE) { g.x = MAP_X + TILE / 2; g.col = 0; }
   }
 }
 

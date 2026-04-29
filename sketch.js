@@ -1,26 +1,33 @@
 // 1=벽, 0=길(콩), 2=워프통로, 3=유령집(콩없음)
 
 const MAP_TEMPLATE = [
-  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0], // 0
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 1
-  [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 2
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0], // 3
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 4
-  [0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0], // 5
-  [1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1], // 6
-  [2, 0, 0, 0, 0, 0, 0, 1, 0, 3, 3, 3, 0, 1, 0, 0, 0, 0, 0, 0, 2], // 7 워프행
-  [1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1], // 8
-  [0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0], // 9
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 10
-  [0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0], // 11
-  [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0], // 12
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 13
-  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0], // 14
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 0
+  [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1], // 1
+  [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1], // 2
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 3
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 4
+  [1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 5
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 6
+  [0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0], // 7
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0], // 8
+  [0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0], // 9
+  [1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1], // 10
+  [2, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2], // 11 워프
+  [0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 3, 3, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0], // 12
+  [0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 3, 3, 3, 3, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0], // 13
+  [1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 3, 3, 3, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1], // 14
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 15
+  [1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1], // 16
+  [1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1], // 17
+  [1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1], // 18
+  [1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1], // 19
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 20
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 21
 ];
 
-const COLS = MAP_TEMPLATE[0].length; // 21
-const ROWS = MAP_TEMPLATE.length;    // 15
-const TILE = 40;
+const COLS = MAP_TEMPLATE[0].length; // 28
+const ROWS = MAP_TEMPLATE.length;    // 22
+const TILE = 28;
 const SPEED = 2;
 
 let mapImg;
@@ -40,7 +47,7 @@ function isWall(c, r) {
 // 팩맨
 function makePac() {
   return {
-    col: 10, row: 10, x: 10 * TILE + TILE / 2, y: 10 * TILE + TILE / 2, dx: 0, dy: 0, mouth: 0.3
+    col: 13, row: 20, x: 13 * TILE + TILE / 2, y: 20 * TILE + TILE / 2, dx: 0, dy: 0, mouth: 0.05
   };
 }
 
@@ -91,7 +98,7 @@ function drawPac(p) {
   fill(255, 220, 0);
   arc(0, 0, r * 2, r * 2, p.mouth * PI, TWO_PI - p.mouth * PI, PIE);
   fill(0);
-  ellipse(r * 0.3, -r * 0.4, r * 0.25, r * 0.25);
+  ellipse(r * 0.3, -r * 0.4, r * 0.22, r * 0.22);
   pop();
 }
 
@@ -113,29 +120,31 @@ function spawnGhost(g) {
       g.inv = 90; return;
     }
   }
-  g.col = 1; g.row = 1; g.x = TILE + TILE / 2; g.y = TILE + TILE / 2; g.inv = 90;
+  g.col = 1; g.row = 3; g.x = TILE + TILE / 2; g.y = 3 * TILE + TILE / 2; g.inv = 90;
 }
 
 function updateGhost(g) {
   if (g.inv > 0) g.inv--;
-  let cx = g.col * TILE + TILE / 2;
-  let cy = g.row * TILE + TILE / 2;
+  let onCenterX = (g.x - TILE / 2) % TILE === 0;
+  let onCenterY = (g.y - TILE / 2) % TILE === 0;
 
-  if (g.x === cx && g.y === cy) {
-    g.x = cx; g.y = cy;
+  if (onCenterX && onCenterY) {
+    let c = (g.x - TILE / 2) / TILE;
+    let r = (g.y - TILE / 2) / TILE;
     let dirs = [{ x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }];
-    let ok = dirs.filter(d => !isWall(g.col + d.x, g.row + d.y));
+    let ok = dirs.filter(d => !isWall(c + d.x, r + d.y));
     let nr = ok.filter(d => !(d.x === -g.dx && d.y === -g.dy));
     let pick = random(nr.length > 0 ? nr : ok);
     if (pick) { g.dx = pick.x; g.dy = pick.y; }
   }
+
   g.x += g.dx * SPEED;
   g.y += g.dy * SPEED;
   g.col = floor(g.x / TILE);
   g.row = floor(g.y / TILE);
 
-  if (g.x < 0) { g.x = COLS * TILE - SPEED; g.col = COLS - 1; }
-  if (g.x >= COLS * TILE) { g.x = SPEED; g.col = 0; }
+  if (g.x < 0) { g.x = COLS * TILE - TILE / 2; g.col = COLS - 1; }
+  if (g.x >= COLS * TILE) { g.x = TILE / 2; g.col = 0; }
 }
 
 function drawGhost(g) {
@@ -189,50 +198,23 @@ function drawMap() {
       let x = c * TILE, y = r * TILE;
       let t = MAP_TEMPLATE[r][c];
       if (t === 1) {
-        // 벽: 진한 파란색 채우기
-        fill(10, 20, 120);
-        noStroke();
-        rect(x, y, TILE, TILE);
-        // 네온 테두리
-        stroke(0, 200, 255);
-        strokeWeight(1.5);
-        noFill();
+        fill(10, 20, 120); noStroke(); rect(x, y, TILE, TILE);
+        stroke(0, 200, 255); strokeWeight(1.5); noFill();
         if (r > 0 && MAP_TEMPLATE[r - 1][c] !== 1) line(x, y, x + TILE, y);
         if (r < ROWS - 1 && MAP_TEMPLATE[r + 1][c] !== 1) line(x, y + TILE, x + TILE, y + TILE);
         if (c > 0 && MAP_TEMPLATE[r][c - 1] !== 1) line(x, y, x, y + TILE);
         if (c < COLS - 1 && MAP_TEMPLATE[r][c + 1] !== 1) line(x + TILE, y, x + TILE, y + TILE);
       } else if (t === 3) {
-        // 유령 집: 어두운 색
-        fill(5, 5, 40);
-        noStroke();
-        rect(x, y, TILE, TILE);
+        fill(5, 5, 40); noStroke(); rect(x, y, TILE, TILE);
       } else {
-        // 길(0) 또는 워프(2): 검정
-        fill(0);
-        noStroke();
-        rect(x, y, TILE, TILE);
+        fill(0); noStroke(); rect(x, y, TILE, TILE);
       }
-    }
-  }
-  // 유령 집 테두리
-  stroke(180, 100, 255);
-  strokeWeight(1);
-  noFill();
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      if (MAP_TEMPLATE[r][c] !== 3) continue;
-      let x = c * TILE, y = r * TILE;
-      if (r === 0 || MAP_TEMPLATE[r - 1][c] !== 3) line(x, y, x + TILE, y);
-      if (r === ROWS - 1 || MAP_TEMPLATE[r + 1][c] !== 3) line(x, y + TILE, x + TILE, y + TILE);
-      if (c === 0 || MAP_TEMPLATE[r][c - 1] !== 3) line(x, y, x, y + TILE);
-      if (c === COLS - 1 || MAP_TEMPLATE[r][c + 1] !== 3) line(x + TILE, y, x + TILE, y + TILE);
     }
   }
   noStroke();
 }
 
 function draw() {
-  background(0);
   if (state === 'PLAY') {
     updatePac(pac);
     for (let g of ghosts) {
@@ -255,8 +237,8 @@ function draw() {
   // 콩
   noStroke();
   for (let d of dots) {
-    let x = d.c * TILE + TILE / 2, y = d.r * TILE + TILE / 2;
-    fill(255, 210, 150); ellipse(x, y, TILE * 0.15, TILE * 0.15);
+    fill(255, 210, 150);
+    ellipse(d.c * TILE + TILE / 2, d.r * TILE + TILE / 2, TILE * 0.18, TILE * 0.18);
   }
 
   drawPac(pac);
@@ -264,7 +246,7 @@ function draw() {
 
   // UI 바
   let uy = ROWS * TILE;
-  fill(5, 5, 25); noStroke(); rect(0, ROWS * TILE, COLS * TILE, 40);
+  fill(5, 5, 25); noStroke(); rect(0, uy, COLS * TILE, 40);
   stroke(0, 180, 255, 120); strokeWeight(1); line(0, ROWS * TILE, COLS * TILE, ROWS * TILE); noStroke();
   fill(255, 200, 0); textFont('monospace'); textSize(14); textAlign(LEFT, CENTER);
   text('SCORE ' + nf(score, 5), 10, uy + 20);

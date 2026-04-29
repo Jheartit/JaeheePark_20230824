@@ -259,6 +259,7 @@ function draw() {
   }
 
   drawMap();
+    if(flashT>0&&flashT%10<5){fill(255,0,0,55);noStroke();rect(MAP_X,MAP_Y,COLS*TILE,ROWS*TILE);}
 
   // 콩
   noStroke();

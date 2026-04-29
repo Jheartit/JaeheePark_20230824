@@ -72,8 +72,8 @@ function isWall(c, r) {
 
 // 팩맨
 function makePac() {
-  // 시작: row 37 중앙 근처 길
-  let sc = 30, sr = 20;
+  // 시작
+  let sc = 2, sr = 2;
   outer: for (let dr = 0; dr < ROWS; dr++) {
     for (let dc = 0; dc < COLS; dc++) {
       let r = min(ROWS - 1, max(0, sr + dr)), c = min(COLS - 1, max(0, sc + dc));
@@ -83,7 +83,7 @@ function makePac() {
   return {
     col: sc, row: sr,
     x: MAP_X + sc * TILE + TILE / 2, y: MAP_Y + sr * TILE + TILE / 2,
-    dx: 0, dy: 0, mouth: 0.05, mouthDir: 1
+    dx: 0, dy: 0, lastDx:1, lastDy:0, mouth: 0.05, mouthDir: 1
   };
 }
 
@@ -110,7 +110,7 @@ function updatePac(p) {
     if (p.mouth >= 0.35) p.mouthDir = -1;
     if (p.mouth <= 0.02) p.mouthDir = 1;
   } else {
-    p.mouth = max(0.02, p.mouth - 0.06); // 서서히 닫힘
+    p.mouth = 0; // 서서히 닫힘
   }
   // 콩 먹기
   for (let i = dots.length - 1; i >= 0; i--) {
@@ -122,7 +122,7 @@ function updatePac(p) {
 
 function drawPac(p) {
   push(); translate(p.x, p.y);
-  let a = (p.dx === -1) ? PI : (p.dy === 1) ? HALF_PI : (p.dy === -1) ? -HALF_PI : 0;
+  let a = (p.lastDx === -1) ? PI : (p.lastDy === 1) ? HALF_PI : (p.lastDy === -1) ? -HALF_PI : 0;
   rotate(a); noStroke();
   let r = TILE * 0.42;
   fill(255, 220, 0);
@@ -318,6 +318,7 @@ function keyPressed() {
   // 다음 칸이 벽이 아닐 때만 방향 변경
   if (!isWall(pac.col + nx, pac.row + ny)) {
     pac.dx = nx; pac.dy = ny;
+    pac.lastDx=nx; pac.lastDy=ny;
   }
 }
 

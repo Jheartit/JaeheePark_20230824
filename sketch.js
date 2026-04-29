@@ -47,14 +47,14 @@ const MAP_TEMPLATE = [
 const COLS = MAP_TEMPLATE[0].length;
 const ROWS = MAP_TEMPLATE.length;
 const TILE = 14;
-const SPEED = 2;
+const SPEED = 7;
 const MAP_X = 135; // 맵 좌측 오프셋 
 const MAP_Y = 20;  // 맵 상단 오프셋 
 const CANVAS_W = 1124; // 전체 캔버스 가로 
 const CANVAS_H = 654;  // 전체 캔버스 세로 
 
-const CHAR_SIZE = TILE * 2;  // 팩맨, 유령 크기 (타일 2.2배)
-const DOT_SIZE = TILE * 1;  // 콩 크기 (타일 0.7배)
+const CHAR_SIZE = TILE * 1;  // 팩맨, 유령 크기 
+const DOT_SIZE = TILE * 1;  // 콩 크기 
 const DOT_STEP = 7;           // 콩 간격 (2칸마다 1개)
 
 let dots = [], pac, ghosts = [];

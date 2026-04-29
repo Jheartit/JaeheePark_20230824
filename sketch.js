@@ -65,48 +65,29 @@ function isWall(c, r) {
 
 // 팩맨
 function makePac() {
-  return {
-    col: 13, row: 20, x: 13 * TILE + TILE / 2, y: 20 * TILE + TILE / 2, dx: 0, dy: 0, mouth: 0.05
-  };
+  // 시작: row 37 중앙 근처 길
+  let sc=30, sr=37;
+  for (let r=ROWS-2;r>0;r--) for (let c=1;c<COLS-1;c++)
+    if (MAP_TEMPLATE[r][c]===0){sc=c;sr=r;break;}
+  return {col:sc,row:sr,x:sc*TILE+TILE/2,y:sr*TILE+TILE/2,dx:0,dy:0,mouth:0.05};
 }
 
 function updatePac(p) {
-  // 키를 누르고 있을 때만 이동
-  if (p.dx === 0 && p.dy === 0) return;
-
-  // 타일 중앙 도달 여부: 픽셀이 TILE 단위의 중간(TILE/2)에 정확히 있을 때
-  let onCenterX = (p.x - TILE / 2) % TILE === 0;
-  let onCenterY = (p.y - TILE / 2) % TILE === 0;
-
-  if (onCenterX && onCenterY) {
-    let c = (p.x - TILE / 2) / TILE;
-    let r = (p.y - TILE / 2) / TILE;
-    // 다음 칸이 벽이면 멈춤
-    if (isWall(c + p.dx, r + p.dy)) {
-      p.dx = 0; p.dy = 0;
-      return;
-    }
+  if (p.dx===0 && p.dy===0) return;
+  let onCX = (p.x - TILE/2) % TILE === 0;
+  let onCY = (p.y - TILE/2) % TILE === 0;
+  if (onCX && onCY) {
+    let c=(p.x-TILE/2)/TILE, r=(p.y-TILE/2)/TILE;
+    if (isWall(c+p.dx, r+p.dy)) { p.dx=0; p.dy=0; return; }
   }
-
-  p.x += p.dx * SPEED;
-  p.y += p.dy * SPEED;
-  p.col = floor(p.x / TILE);
-  p.row = floor(p.y / TILE);
-
-  // 워프
-  if (p.x < 0) { p.x = COLS * TILE - TILE / 2; p.col = COLS - 1; }
-  if (p.x >= COLS * TILE) { p.x = TILE / 2; p.col = 0; }
-
-  // 입 애니메이션: 키 누를 때 닫힘, 뗄 때 열림
-  if (keyDown) p.mouth = max(0.02, p.mouth - 0.06);
-  else p.mouth = min(0.35, p.mouth + 0.06);
-
-  // 콩 먹기
-  for (let i = dots.length - 1; i >= 0; i--) {
-    if (dots[i].c === p.col && dots[i].r === p.row) {
-      dots.splice(i, 1); score += 10; break;
-    }
-  }
+  p.x += p.dx*SPEED; p.y += p.dy*SPEED;
+  p.col=floor(p.x/TILE); p.row=floor(p.y/TILE);
+  if (p.x<0)          { p.x=COLS*TILE-TILE/2; p.col=COLS-1; }
+  if (p.x>=COLS*TILE) { p.x=TILE/2;           p.col=0; }
+  if (keyDown) p.mouth=min(0.35,p.mouth+0.06);
+  else         p.mouth=max(0.02,p.mouth-0.06);
+  for (let i=dots.length-1;i>=0;i--)
+    if (dots[i].c===p.col&&dots[i].r===p.row){dots.splice(i,1);score+=10;break;}
 }
 
 function drawPac(p) {
@@ -115,9 +96,8 @@ function drawPac(p) {
   rotate(a); noStroke();
   let r = TILE * 0.42;
   fill(255, 220, 0);
-  arc(0, 0, r * 2, r * 2, p.mouth * PI, TWO_PI - p.mouth * PI, PIE);
-  fill(0);
-  ellipse(r * 0.3, -r * 0.4, r * 0.22, r * 0.22);
+  arc(0,0,TILE*0.85,TILE*0.85,p.mouth*PI,TWO_PI-p.mouth*PI,PIE);
+  fill(0); ellipse(TILE*0.15,-TILE*0.18,TILE*0.1,TILE*0.1);
   pop();
 }
 
@@ -129,14 +109,10 @@ function makeGhost(i) {
 }
 
 function spawnGhost(g) {
-  for (let t = 0; t < 300; t++) {
-    let c = floor(random(1, COLS - 1));
-    let r = floor(random(1, ROWS - 1));
-    if (!isWall(c, r) && dist(c, r, pac ? pac.col : 10, pac ? pac.row : 10) > 5) {
-      g.col = c; g.row = r;
-      g.x = c * TILE + TILE / 2;
-      g.y = r * TILE + TILE / 2;
-      g.inv = 90; return;
+  for(let t=0;t<300;t++){
+    let c=floor(random(1,COLS-1)),r=floor(random(1,ROWS-1));
+    if(!isWall(c,r)&&dist(c,r,pac?pac.col:30,pac?pac.row:37)>5){
+      g.col=c;g.row=r;g.x=c*TILE+TILE/2;g.y=r*TILE+TILE/2;g.inv=90;return;
     }
   }
   g.col = 1; g.row = 3; g.x = TILE + TILE / 2; g.y = 3 * TILE + TILE / 2; g.inv = 90;

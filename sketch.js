@@ -169,7 +169,7 @@ function updateGhost(g) {
     let c = (g.x - TILE / 2) / TILE;
     let r = (g.y - TILE / 2) / TILE;
     let dirs = [{ x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }];
-    let ok = dirs.filter(d => !isWallGhost(c + d.x, r + d.y));
+    let ok = dirs.filter(d => !isWallGhost(c + d.x, r + d.y)); 
     let nr = ok.filter(d => !(d.x === -g.dx && d.y === -g.dy));
     let pick = random(nr.length > 0 ? nr : ok);
     if (pick) { g.dx = pick.x; g.dy = pick.y; }

@@ -53,9 +53,9 @@ const MAP_Y = 20;  // 맵 상단 오프셋
 const CANVAS_W = 1124; // 전체 캔버스 가로 
 const CANVAS_H = 654;  // 전체 캔버스 세로 
 
-const CHAR_SIZE = TILE * 2.2;  // 팩맨, 유령 크기 (타일 2.2배)
-const DOT_SIZE  = TILE * 3;  // 콩 크기 (타일 0.7배)
-const DOT_STEP  = 5;           // 콩 간격 (2칸마다 1개)
+const CHAR_SIZE = TILE * 2;  // 팩맨, 유령 크기 (타일 2.2배)
+const DOT_SIZE = TILE * 1;  // 콩 크기 (타일 0.7배)
+const DOT_STEP = 7;           // 콩 간격 (2칸마다 1개)
 
 let dots = [], pac, ghosts = [];
 let score = 0, energy = 3;
@@ -108,8 +108,8 @@ function drawPac(p) {
   rotate(a); noStroke();
   let r = TILE * 0.42;
   fill(255, 220, 0);
-  arc(0, 0, TILE * 0.85, TILE * 0.85, p.mouth * PI, TWO_PI - p.mouth * PI, PIE);
-  fill(0); ellipse(TILE * 0.15, -TILE * 0.18, TILE * 0.1, TILE * 0.1);
+  arc(0, 0, CHAR_SIZE, CHAR_SIZE, p.mouth * PI, TWO_PI - p.mouth * PI, PIE);
+  fill(0); ellipse(CHAR_SIZE * 0.18, -CHAR_SIZE * 0.2, CHAR_SIZE * 0.12, CHAR_SIZE * 0.12);
   pop();
 }
 
@@ -158,7 +158,7 @@ function drawGhost(g) {
   let [r, gr, b] = GC[g.idx % 5];
   let al = g.inv > 0 ? lerp(60, 255, (90 - g.inv) / 90) : 255;
   push(); translate(g.x, g.y); noStroke();
-  let s = TILE * 0.82;
+  let s = CHAR_SIZE;
   fill(r, gr, b, al); arc(0, 0, s, s, PI, TWO_PI); rect(-s / 2, 0, s, s * 0.5);
   beginShape(); vertex(-s / 2, s * 0.48);
 
@@ -186,11 +186,10 @@ function initGame() {
   dots = [];
   for (let r = 0; r < ROWS; r++)
     for (let c = 0; c < COLS; c++)
-      if (MAP_TEMPLATE[r][c] === 0) dots.push({ c, r });
-  pac = makePac();
-  ghosts = [];
+      if (MAP_TEMPLATE[r][c] === 0 && r % DOT_STEP === 0 && c % DOT_STEP === 0) dots.push({ c, r });
+  pac = makePac(); ghosts = [];
   for (let i = 0; i < 5; i++) ghosts.push(makeGhost(i));
-  score = 0; energy = 3; state = 'PLAY'; restartT = 0; flashT = 0;
+  score = 0; energy = 3; state = 'PLAY'; restartT = 0; flashT = 0; keyDown = false;
 }
 
 // 맵 그리기
@@ -238,7 +237,7 @@ function draw() {
   noStroke();
   for (let d of dots) {
     fill(255, 210, 150);
-    ellipse(MAP_X + d.c * TILE + TILE / 2, MAP_Y + d.r * TILE + TILE / 2, TILE * 0.35, TILE * 0.35);
+    ellipse(MAP_X + d.c * TILE + TILE / 2, MAP_Y + d.r * TILE + TILE / 2, DOT_SIZE, DOT_SIZE);
   }
 
   drawPac(pac);

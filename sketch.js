@@ -46,12 +46,12 @@ const MAP_TEMPLATE = [
 
 const COLS = MAP_TEMPLATE[0].length;
 const ROWS = MAP_TEMPLATE.length;
-const TILE = 14;
-const SPEED = 7;
-const MAP_X = 135; // 맵 좌측 오프셋 
-const MAP_Y = 20;  // 맵 상단 오프셋 
-const CANVAS_W = 1124; // 전체 캔버스 가로 
-const CANVAS_H = 654;  // 전체 캔버스 세로 
+const TILE = 20;
+const SPEED = 5;
+const MAP_X = 194; // 맵 좌측 오프셋 
+const MAP_Y = 28;  // 맵 상단 오프셋 
+const CANVAS_W = 1608; // 전체 캔버스 가로 
+const CANVAS_H = 916;  // 전체 캔버스 세로 
 
 const CHAR_SIZE = TILE * 1;  // 팩맨, 유령 크기 
 const DOT_SIZE = TILE * 1;  // 콩 크기 

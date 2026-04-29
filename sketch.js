@@ -74,9 +74,14 @@ function isWall(c, r) {
 function makePac() {
   // 시작: row 37 중앙 근처 길
   let sc = 30, sr = 37;
-  for (let r = ROWS - 2; r > 0; r--) for (let c = 1; c < COLS - 1; c++)
-    if (MAP_TEMPLATE[r][c] === 0) { sc = c; sr = r; break; }
-  return { col: sc, row: sr, x: MAP_X + sc * TILE + TILE / 2, y: MAP_Y + sr * TILE + TILE / 2, dx: 0, dy: 0, mouth: 0.05 };
+  outer: for (let r = ROWS - 2; r > 0; r--)
+    for (let c = 1; c < COLS - 1; c++)
+      if (MAP_TEMPLATE[r][c] === 0) { sc = c; sr = r; break outer; }
+  return {
+    col: sc, row: sr,
+    x: MAP_X + sc * TILE + TILE / 2, y: MAP_Y + sr * TILE + TILE / 2,
+    dx: 0, dy: 0, mouth: 0.05, mouthDir: 1
+  };
 }
 
 function updatePac(p) {
@@ -95,8 +100,13 @@ function updatePac(p) {
   if (p.x < MAP_X) { p.x = MAP_X + COLS * TILE - TILE / 2; p.col = COLS - 1; }
   if (p.x >= MAP_X + COLS * TILE) { p.x = MAP_X + TILE / 2; p.col = 0; }
   // 입 애니메이션
-  if (keyDown) p.mouth = min(0.35, p.mouth + 0.06);
-  else p.mouth = max(0.02, p.mouth - 0.06);
+  if (keyDown) {
+    p.mouth += 0.04 * p.mouthDir;
+    if (p.mouth >= 0.35) p.mouthDir = -1;
+    if (p.mouth <= 0.02) p.mouthDir = 1;
+  } else {
+    p.mouth = max(0.02, p.mouth - 0.06); // 서서히 닫힘
+  }
   // 콩 먹기
   for (let i = dots.length - 1; i >= 0; i--)
     if (dots[i].c === p.col && dots[i].r === p.row) { dots.splice(i, 1); score += 10; break; }

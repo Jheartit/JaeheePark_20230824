@@ -47,7 +47,7 @@ const MAP_TEMPLATE = [
 const COLS = MAP_TEMPLATE[0].length;
 const ROWS = MAP_TEMPLATE.length;
 const TILE = 14;
-const SPEED = 1;
+const SPEED = 2;
 const MAP_X = 135; // 맵 좌측 오프셋 
 const MAP_Y = 20;  // 맵 상단 오프셋 
 const CANVAS_W = 1124; // 전체 캔버스 가로 
@@ -73,15 +73,16 @@ function isWall(c, r) {
 // 팩맨
 function makePac() {
   // 시작: row 37 중앙 근처 길
-  let sc = 30, sr = 37;
-  outer: for (let r = ROWS - 2; r > 0; r--)
-    for (let c = 1; c < COLS - 1; c++)
-      if (MAP_TEMPLATE[r][c] === 0) { sc = c; sr = r; break outer; }
-  return {
-    col: sc, row: sr,
-    x: MAP_X + sc * TILE + TILE / 2, y: MAP_Y + sr * TILE + TILE / 2,
-    dx: 0, dy: 0, mouth: 0.05, mouthDir: 1
-  };
+  let sc = 30, sr = 20;
+  outer: for (let dr=0; dr<ROWS; dr++) {
+    for (let dc=0; dc<COLS; dc++) {
+      let r=min(ROWS-1,max(0,sr+dr)), c=min(COLS-1,max(0,sc+dc));
+      if (MAP_TEMPLATE[r][c]===0){sc=c;sr=r;break outer;}
+    }
+  }
+  return {col:sc, row:sr,
+           x:MAP_X+sc*TILE+TILE/2, y:MAP_Y+sr*TILE+TILE/2,
+           dx:0, dy:0, mouth:0.05, mouthDir:1};
 }
 
 function updatePac(p) {
@@ -97,8 +98,10 @@ function updatePac(p) {
   p.col = floor((p.x - MAP_X) / TILE);
   p.row = floor((p.y - MAP_Y) / TILE);
 
-  if (p.x < MAP_X) { p.x = MAP_X + COLS * TILE - TILE / 2; p.col = COLS - 1; }
-  if (p.x >= MAP_X + COLS * TILE) { p.x = MAP_X + TILE / 2; p.col = 0; }
+  if (MAP_TEMPLATE[p.row] && MAP_TEMPLATE[p.row][0] === 2) {
+    if (p.x < MAP_X)             { p.x=MAP_X+COLS*TILE-TILE/2; p.col=COLS-1; }
+    if (p.x >= MAP_X+COLS*TILE)  { p.x=MAP_X+TILE/2;           p.col=0; }
+  }
   // 입 애니메이션
   if (keyDown) {
     p.mouth += 0.04 * p.mouthDir;
@@ -160,8 +163,10 @@ function updateGhost(g) {
   g.col = floor(g.x / TILE);
   g.row = floor(g.y / TILE);
 
-  if (g.x < 0) { g.x = COLS * TILE - TILE / 2; g.col = COLS - 1; }
-  if (g.x >= COLS * TILE) { g.x = TILE / 2; g.col = 0; }
+  if (MAP_TEMPLATE[g.row] && MAP_TEMPLATE[g.row][0] === 2) {
+    if(g.x<MAP_X)            {g.x=MAP_X+COLS*TILE-TILE/2;g.col=COLS-1;}
+    if(g.x>=MAP_X+COLS*TILE) {g.x=MAP_X+TILE/2;g.col=0;}
+  }
 }
 
 function drawGhost(g) {

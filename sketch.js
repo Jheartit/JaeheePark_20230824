@@ -91,7 +91,8 @@ function makePac() {
 
 function updatePac(p) {
   if (p.dx === 0 && p.dy === 0) return;
-  let lx = p.x - MAP_X, ly = p.y - MAP_Y;
+  let lx = round(p.x - MAP_X);
+  let ly = round(p.y - MAP_Y);
   let onCX = (lx - TILE / 2) % TILE === 0;
   let onCY = (ly - TILE / 2) % TILE === 0;
   if (onCX && onCY) {
